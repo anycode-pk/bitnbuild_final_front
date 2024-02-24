@@ -3,20 +3,21 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:mc_inventory_app/grid.dart';
-import 'package:mc_inventory_app/item.dart';
+import 'package:mc_inventory_app/craftable.dart';
+import 'package:mc_inventory_app/recipe.dart';
 
-class Inventory extends StatelessWidget {
-  const Inventory({super.key});
+class Crafting extends StatelessWidget {
+  const Crafting({super.key});
 
-  Future<List<Item>> fetchItems() async {
+  Future<List<Craftable>> fetchItems() async {
     try {
       // Fetch items from the server
       final response =
-          await http.get(Uri.parse('https://localhost:5000/items'));
+          await http.get(Uri.parse('https://localhost:5000/crafting'));
       if (response.statusCode == 200) {
         // If the server returns a 200 OK response, parse the JSON
         return (json.decode(response.body) as List)
-            .map((data) => Item.fromJson(data))
+            .map((data) => Craftable.fromJson(data))
             .toList();
       } else {
         // If the server returns an error response, throw an exception
@@ -24,12 +25,16 @@ class Inventory extends StatelessWidget {
       }
     } catch (_) {
       // If there's an error (e.g., no internet connection), generate 50 items
-      return List<Item>.generate(
+      return List<Craftable>.generate(
         50,
-        (i) => Item(
-          imageUrl: 'https://picsum.photos/seed/${i + 1}/128/128',
-          name: 'ItemName',
-          quantity: 'Quantity',
+        (i) => Craftable(
+          imageUrl: 'https://via.placeholder.com/150',
+          name: 'Item $i',
+          quantity: 'Quantity: $i',
+          recipe: Recipe(
+            ingredients: ['Ingredient 1', 'Ingredient 2'],
+            name: 'Recipe $i',
+          ),
         ),
       );
     }
@@ -37,9 +42,9 @@ class Inventory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Item>>(
+    return FutureBuilder<List<Craftable>>(
       future: fetchItems(),
-      builder: (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<List<Craftable>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator(); // show loading spinner while waiting
         } else if (snapshot.hasError) {

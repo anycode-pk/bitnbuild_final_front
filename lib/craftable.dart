@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:mc_inventory_app/recipe.dart';
 
-class Item extends StatelessWidget {
+class Craftable extends StatelessWidget {
   final String imageUrl;
   final String name;
   final String quantity;
+  final Recipe recipe;
 
-  const Item(
+  const Craftable(
       {super.key,
       required this.imageUrl,
       required this.name,
-      required this.quantity});
+      required this.quantity,
+      required this.recipe});
 
-  static Item fromJson(Map<String, dynamic> json) {
-    return Item(
-      imageUrl: json['item_image'],
-      name: json['item_name'],
-      quantity: json['count'],
+  static Craftable fromJson(Map<String, dynamic> json) {
+    return Craftable(
+      imageUrl: json['imageUrl'],
+      name: json['name'],
+      quantity: json['quantity'],
+      recipe: Recipe.fromJson(json['recipe']),
     );
   }
 

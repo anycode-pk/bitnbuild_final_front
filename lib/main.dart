@@ -9,8 +9,14 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-          colorSchemeSeed: const Color(0xff6750a4), useMaterial3: true),
+      title: 'MC Inventory App',
+      themeMode: ThemeMode.light,
+      theme:
+          ThemeData(colorScheme: const ColorScheme.light(), useMaterial3: true),
+      darkTheme: ThemeData(
+        colorScheme: const ColorScheme.dark(),
+        useMaterial3: true,
+      ),
       home: const Tabs(),
     );
   }
