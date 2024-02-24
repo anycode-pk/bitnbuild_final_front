@@ -6,14 +6,37 @@ class Tabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final Color oddItemColor = colorScheme.primary.withOpacity(0.05);
-    final Color evenItemColor = colorScheme.primary.withOpacity(0.15);
-    const int tabsCount = 3;
+    const List<Map<String, dynamic>> tabs = [
+      {
+        'tab': Tab(
+          icon: Icon(Icons.apps),
+          text: 'Inventory',
+        ),
+        'view': Inventory(),
+      },
+      {
+        'tab': Tab(
+          icon: Icon(Icons.build),
+          text: 'Crafting',
+        ),
+        'view': Center(
+          child: Text('Crafting'),
+        ),
+      },
+      {
+        'tab': Tab(
+          icon: Icon(Icons.notifications),
+          text: 'Notifications',
+        ),
+        'view': Center(
+          child: Text('Notifications'),
+        ),
+      },
+    ];
 
     return DefaultTabController(
       initialIndex: 0,
-      length: tabsCount,
+      length: tabs.length,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Minecraft Smart Inventory App'),
@@ -22,29 +45,16 @@ class Tabs extends StatelessWidget {
           },
           scrolledUnderElevation: 4.0,
           shadowColor: Theme.of(context).shadowColor,
-          bottom: const TabBar(
-            tabs: <Widget>[
-              Tab(
-                icon: Icon(Icons.apps),
-                text: 'Inventory',
-              ),
-              Tab(
-                icon: Icon(Icons.build),
-                text: 'Crafting',
-              ),
-              Tab(
-                icon: Icon(Icons.notifications),
-                text: 'Notifications',
-              ),
-            ],
+          bottom: TabBar(
+            tabs: tabs
+                .map((Map<String, dynamic> tab) => tab['tab'] as Tab)
+                .toList(),
           ),
         ),
         body: TabBarView(
-          children: <Widget>[
-            Inventory(oddItemColor: oddItemColor, evenItemColor: evenItemColor),
-            const Center(child: Text('Crafting')),
-            const Center(child: Text('Notifications')),
-          ],
+          children: tabs
+              .map((Map<String, dynamic> tab) => tab['view'] as Widget)
+              .toList(),
         ),
       ),
     );

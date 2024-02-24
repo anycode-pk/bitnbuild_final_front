@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class Item extends StatelessWidget {
   final String imageUrl;
-  final String title;
-  final String subtitle;
+  final String name;
+  final String quantity;
 
   const Item(
       {super.key,
       required this.imageUrl,
-      required this.title,
-      required this.subtitle});
+      required this.name,
+      required this.quantity});
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +26,8 @@ class Item extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: Text(title),
-            subtitle: Text(subtitle),
+            title: Text(name),
+            subtitle: Text(quantity),
           ),
         ],
       ),
